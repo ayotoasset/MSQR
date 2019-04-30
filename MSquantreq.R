@@ -8,6 +8,8 @@ library(ald)
 #'  each state. Each state is estimated seperately at quantile tau, weighting
 #'  each observation by the probability to pertain to the state under
 #'  evaluation.
+#'@license This algorithm is a refactored version of code that was provided by Timo Adams.
+#' only slight alterations such as comments, plots and formula interaction have been added.
 #'@remark The extension to non-linear quantile regression fails, as weighting is
 #'  not implemented in the RQSS package correctly.
 #'@param N number of states
@@ -194,7 +196,7 @@ MS.fitquantreg = function(data,
         #                 tau = tau,
         #                 weights = weights[j,],
         #                 data = data ,
-        #                 lambda = 10 # als global argument und nicht term specific übergeben?
+        #                 lambda = 10 # als global argument und nicht term specific Ã¼bergeben?
         # )
 
         # MLEs for parameter mu of the ALD
@@ -260,59 +262,4 @@ MS.fitquantreg = function(data,
   }
 }
 
-
-
-
-#.#' title Cross validation of non-linear MSquantreg
-#' (not quite finished: qss modelframe extpansion is required to get CV score.
-#' also, the changed lambdas must still be inserted in the qss formula in a nice way.)
-#' @param ... passing to fit.msquantreg
-#'
-#' @remark must be added in a smart way, if multiple qss terms are available
-#'   multiple qss? listformula = attr(terms(formula), "variables") : terms
-#'   [[3]]- [[...]], carefull if fixed terms! lambda cannot be assigned as
-#'   listformula[[3]]$lambda, if [[3]] is fixedeffect!
-#'   formula = y~ +x2 + qss(x1, lambda = 0.5 ) +qss(x3, lambda = 0.7)
-#'   f = ~qss(x1) +qss(x2) # initial guess contained in lambda argument
-# crossvalidate = function(data, formula ,lambda = list(lambda1 = seq(0, 2, 1),lambda2 = seq(1,4,0.1)), tau = 0.5, N = 2, ...){
-#
-#   y = data[,as.character(formula[[2]])]
-#
-#   # initial guess
-#   TERMS = terms(formula, 'qss')
-#   index = attr(TERMS, 'specials')$qss +1 # index position
-#   lambdas = sapply(index, function(x) attr(TERMS, 'variables')[[x]]$lambda)
-#
-#   # all possible lambda combinations. still hard coded for 2 qss terms
-#   d = expand.grid(lambda[[1]], lambda[[2]])
-#
-#   fit = list()
-#   diff = list()
-#
-#   for (i in ncol(d)){ # current lambda vector
-#     for(j in index){
-#       attr(TERMS, 'variables')[[index]]$lambda = d[,i]
-#       match.call(attr(TERMS, 'variables')[[4]]) # must be rebuild to formula
-#       fit[[i]] =  fit.msquantreg(data = data, formula = formula, tau = tau, ...)
-#     }
-#
-#
-#     for(j in 1:N){
-#       # weighted residuals. ONLY difficulty is that each observation will be
-#       # considered twice (but weighted respectively).
-#       diff[[j]] = (y - fitted(fit[[i]]$mod[[j]]))*t(fit[[i]]$state_probs[j,])
-#       length(diff[[j]])
-#     }
-#   }
-# }
-#
-# # rows of state_probs are the weights of how strongly the observations are
-# # considered in the RQSS estimation. which.max can cope with higher state orders N
-# # Note that these are 'rude' predictions.
-# # predicted.state = apply(fit[[i]]$state_probs, MARGIN = 2, which.max)
-# # for(j in 1:N){
-# #   # state dependent residuals
-# #   diff[[j]] = (y - fitted(fit[[i]]$mod[[j]]))[predicted.state == j]
-# #   ndiff = length(diff[[j]])
-# # }
 
