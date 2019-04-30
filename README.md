@@ -1,5 +1,6 @@
-# MSQR
-Markov-Switching-(non-)linear-Quantile-Regression
+# MSQR 
+## Markov-Switching-(non-)linear-Quantile-Regression
+
 
 With permission of Prof. Thomas Kneib (Uni Göttingen) and Timo Adams (Uni Bielefeld), I, Tim Ruhkopf (Uni Göttingen) publish my work at the Chair of Statistics and Econometrics of the Georg-August-University Göttingen.
 
